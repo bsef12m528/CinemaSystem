@@ -17,7 +17,7 @@
         foreach (Gallery gallery in galleries)
         {
             <div class="col-sm-4">
-                <h3 style="background-color: #46b8da; padding: 2%">@gallery.galleryName</h3>
+                <h4 style="background-color: #46b8da; padding: 2%">@gallery.galleryName</h4>
                 <table class="table" style="background-color: #860707;">
                     @foreach (Show show in todayShows.Where(x => x.showGalleryId == gallery.galleryId))
                     {
@@ -38,7 +38,7 @@
         foreach (Gallery gallery in galleries)
         {
             <div class="col-sm-4">
-                <h3 style="background-color: #46b8da; padding: 2%">@gallery.galleryName</h3>
+                <h4 style="background-color: #46b8da; padding: 2%">@gallery.galleryName</h4>
                 <table class="table" style="background-color: #860707; ">
                     @foreach (Show show in tommorowShows.Where(x => x.showGalleryId == gallery.galleryId))
                     {
