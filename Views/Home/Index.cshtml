@@ -1,0 +1,165 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/HeaderFooter.cshtml";
+}
+
+
+@using CinemaInformationSystemProject.Models;
+
+
+
+<div class="container">
+    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        @*<ol class="carousel-indicators">
+                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+                <li data-target="#carousel-example-generic" data-slide-to="4"></li>
+            </ol>*@
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+
+            @{
+                List<Movie> sliderMovies = ViewBag.sliderMovies;
+
+                string[] arr = sliderMovies[0].movieReleaseDate.Split('/');
+                DateTime dt = new DateTime(int.Parse(arr[2]), int.Parse(arr[0]), int.Parse(arr[1]));
+
+                string rDate = dt.ToString("MMM dd ,yyyy");
+
+                @:<div class="item active">
+                    <img src="~/images/MoviesImages/@(sliderMovies[0].movieId).jpg" alt="...">
+                    @:<div class="carousel-caption">
+                        <h3 style="">@sliderMovies[0].movieName</h3>
+                if (DateTime.Compare(DateTime.Today, dt) < 0)
+                {
+                    <h4>Releasing On <label style="color: #46b8da">@rDate</label></h4>
+                }
+                @:</div>
+                @:</div>
+
+
+                for (int i = 1; i < sliderMovies.Count; i++)
+                {
+                    arr = sliderMovies[i].movieReleaseDate.Split('/');
+                    dt = new DateTime(int.Parse(arr[2]), int.Parse(arr[0]), int.Parse(arr[1]));
+                    rDate = dt.ToString("MMM dd ,yyyy");
+
+                    @:<div class="item">
+                        <img src="~/images/MoviesImages/@(sliderMovies[i].movieId).jpg" alt="...">
+                        @:<div class="carousel-caption">
+                            <h3>@sliderMovies[i].movieName</h3>
+                    if (DateTime.Compare(DateTime.Today, dt) <= 0)
+                    {
+                        <h4>Releasing On  <label style="color: #46b8da">@rDate</label></h4>
+                    }
+                    @:</div>
+                @:</div>
+                }
+
+            }
+
+
+
+        </div>
+
+        <!-- Controls  -->
+        <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+
+
+    </div> <!-- Carousel -->
+
+
+
+    <div class="row">
+
+
+        <!-- now playing movie cast, genre etc-->
+        <div class="carousel slide col-sm-6" data-ride="carousel">
+            <h3 style="text-align: center; padding:10px; background-color:#860707;">Now Showing In Theater</h3>
+            <div class="carousel-inner">
+                <!--movie items-->
+                @{
+                    List<Show> NowShowingList = ViewBag.NowShowing;
+
+                    if (NowShowingList.Count != 0)
+                    {
+                        @:<div class="item active">
+                            @:<div class="col-sm-4">
+                                @:<img src="/images/MoviesThumbnails/@(NowShowingList[0].Movie.movieId).jpg" alt="...">
+                                @:</div>
+                            @:<div class="col-sm-8">
+                                <h5 style="color: #46b8da; font-weight:bold">@NowShowingList[0].Movie.movieName</h5>@:</br>
+                                <b>Cast:</b>
+                                <p>@NowShowingList[0].Movie.movieCast</p>@:</br>
+                                <b>Genre:</b>
+                                <p>@NowShowingList[0].Movie.movieGenre</p>
+                                @:</div>
+                            @:</div>
+                    }
+
+
+                    for (int i = 1; i < NowShowingList.Count; i++)
+                    {
+                        @:<div class="item">
+                            @:<div class="col-sm-4">
+                                @:<img src="/images/MoviesThumbnails/@(NowShowingList[i].Movie.movieId).jpg" alt="...">
+                                @:</div>
+                            @:<div class="col-sm-8">
+                                <h5 style="color: #46b8da; font-weight: bold">@NowShowingList[i].Movie.movieName</h5>@:</br>
+                                <b>Cast:</b>
+                                <p>@NowShowingList[i].Movie.movieCast</p>@:</br>
+                                <b>Genre:</b>
+                                <p>@NowShowingList[i].Movie.movieGenre</p>
+                                @:</div>
+                            @:</div>
+                    }
+                }
+            </div>
+        </div>
+
+
+
+        <div class="carousel slide col-sm-6" data-ride="carousel">
+            <h3 style="text-align: center; padding: 10px; background-color: #46b8da; ">Coming Soon</h3>
+            <table class="table" style="background-color: #860707;">
+                @{
+                    List<Movie> comingSoon = ViewBag.comingsoon;
+
+                    foreach (Movie movie in comingSoon.OrderByDescending(x => x.movieReleaseDate))
+                    {
+                        <tr>
+                            @{
+                        string[] arr2 = movie.movieReleaseDate.Split('/');
+                        DateTime dt2 = new DateTime(int.Parse(arr2[2]), int.Parse(arr2[0]), int.Parse(arr2[1]));
+                        string rDate2 = dt2.ToString("MMM dd ,yyyy");
+
+                        <td>@movie.movieName</td>
+                                <td>@rDate2</td>
+                                <td>@movie.movieLanguage</td>
+                            }
+                        </tr>
+                    }
+
+                }
+            </table>
+
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+
+    </div>
+    <br /><br /><br /><br />

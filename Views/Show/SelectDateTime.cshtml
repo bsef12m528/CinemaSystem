@@ -1,0 +1,134 @@
+﻿@{
+    ViewBag.Title = "SelectDateTime";
+    Layout = "~/Views/Shared/HeaderFooter.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/jquery-ui.css">
+<script src="~/Scripts/jquery-ui.js"></script>
+
+@using CinemaInformationSystemProject.Models;
+
+<script>
+    function validate() {
+        var date = document.getElementById('showDate').value;
+        var errordiv = document.getElementById('errorDiv');
+
+        if (date == "") {
+            errordiv.innerHTML = "Please provide show date.";
+            errordiv.style.visibility = "visible";
+            document.getElementById('showDate').focus();
+            return false;
+        }
+        return true;
+    }
+</script>
+
+<script>
+    $(function () {
+        var dateToday = new Date();
+        $("#showDate").datepicker({
+            changeMonth: true,
+            minDate: dateToday
+        });
+        //$('#showTime').timepicker();
+    });
+</script>
+
+
+<style>
+    select option, form select option {
+        color: black;
+    }
+
+    button {
+        color: black;
+    }
+
+    * {
+        color: #333;
+    }
+</style>
+<div class="container" style="background-color:white; padding:2%; color:black;">
+    <h3 class="page-header">Select Show</h3>
+    <div class="col-sm-3">
+        <form id="selectShowForm">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Date</label>
+                <input type="text" id="showDate" name="showDate" class="form-control" placeholder="Pick Date">
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">Gallery</label>
+                <select class="form-control" name="showGalleryId">
+                    @foreach (Gallery g in ViewBag.galleries)
+                    {
+                        <option value="@g.galleryId">@g.galleryName</option>
+                    }
+                </select>
+            </div>
+
+            <input type="submit" class="btn btn-info pull-right" id="submit" value="Search Shows" />
+        </form>
+
+        <div class="alert alert-danger" id="errorDiv" style="visibility:hidden;">
+
+        </div>
+
+        <br />
+        <br />
+        <br />
+
+        <div id="hiddenDiv" style="display:none;">
+
+        </div>
+
+    </div>
+
+
+    <div class="col-sm-7 pull-right">
+        <h3 style="color:#46b8da; margin-bottom:2%">&nbsp;&nbsp; Cinema Policy </h3>
+        <ul>
+            <li>Tickets are not refundable - Nor Exchangeable - Non Transferable</li>
+            <li>Kindly check the date, time and name of the film on the ticket.</li>
+            <li>Management will not be responsible if you do not attend the show which is mentioned on the ticket.</li>
+            <li>Ticket has to be in your possession for the entire duration of your visit.</li>
+
+
+        </ul>
+    </div>
+
+
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#selectShowForm').submit(function () {
+
+            if (!validate()) {
+                return false;
+            }
+
+            $.ajax({
+                cache: false,
+                url: '/Show/SelectShow',
+                type: "POST",
+                data: $(this).serialize(),
+                success: function (data) {
+                    $('#hiddenDiv').html(data);
+                    $('#hiddenDiv').show(200);
+                },
+                error: function (xhr) {
+                    alert("error");
+                }
+            })
+
+            // to prevent refreshing the whole page page
+            return false;
+
+        });
+
+
+
+    });
+</script>

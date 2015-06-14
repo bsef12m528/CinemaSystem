@@ -1,0 +1,143 @@
+﻿@model CinemaInformationSystemProject.Models.Movie
+
+@{
+    ViewBag.Title = "EditMovie";
+    Layout = "~/Views/Admin/Admin_Panel.cshtml";
+}
+
+<h3 class="page-header">Update Movie</h3>
+
+
+<div class="col-sm-6">
+@using (Html.BeginForm("EditMovieFunction", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return validate()" }))
+{
+    @Html.HiddenFor(m => m.movieId)
+    
+
+    //@Html.LabelFor(m => m.Price)
+    //@Html.EditorFor(m => m.Price)
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.movieName)
+            @Html.EditorFor(m => m.movieName, new {  @class="form-control" , type = "text", id = "movieName", placeholder = "Enter movie name"})
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.movieGenre)
+            @Html.EditorFor(m => m.movieGenre, new { type = "text", id = "movieGenre", placeholder = "Enter movie Genre", @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.movieDirector)
+            @Html.EditorFor(m => m.movieDirector, new { type = "text", id = "movieDirector", placeholder = "Enter movie Director", @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            <label for="exampleInputEmail1">Language</label>
+            <select name="movieLanguage" class="form-control">
+                <option>Hindi</option>
+                <option>English</option>
+                <option>Urdu</option>
+                <option>Chinese</option>
+            </select>
+        </div>
+
+        <script>
+            $(function () {
+                $("#movieReleaseDate").datepicker();
+            });
+        </script>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.movieReleaseDate)
+            @Html.EditorFor(m => m.movieReleaseDate, new { type = "text", id = "movieReleaseDate", placeholder = "Enter movie Release Date", @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.movieCast)
+            @Html.EditorFor(m => m.movieCast, new { type = "text", id = "movieCast", placeholder = "Enter movie Cast", @class = "form-control" })
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.movieDuration)
+            @Html.EditorFor(m => m.movieDuration, new { @class = "form-control", type = "text", id = "movieDuration", placeholder = "Enter movie duration" })
+
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.movieSynopsis)
+            @Html.TextAreaFor(m => m.movieSynopsis, new { type = "text", id = "movieSynopsis", rows = "3", placeholder = "Provide a small summary of this movie", @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            <label for="exampleInputFile">Movie Banner (1200x300)</label>
+            <input type="file" name="movieBanner" id="movieBanner">
+        </div>
+
+
+        <div class="form-group">
+            <label for="exampleInputFile">Movie Thumbnail (140x180)</label>
+            <input type="file" name="movieThumbnail" id="movieThumbnail">
+        </div>
+        
+        <div class="alert alert-danger" id="errorDivAddMovie" style="visibility:collapse;">
+
+        </div>
+    
+        <button type="submit" class="btn btn-success" style="float:right">Submit</button>
+
+
+   
+}
+    <br /><br /><br />
+</div>
+
+<script>
+    function validate() {
+        var movieName = document.getElementById('movieName').value;
+        var movieGenre = document.getElementById('movieGenre').value;
+        var movieDirector = document.getElementById('movieDirector').value;
+        var movieReleaseDate = document.getElementById('movieReleaseDate').value;
+        var movieCast = document.getElementById('movieCast').value;
+        var movieDuration = document.getElementById('movieDuration').value;
+        var movieSynopsis = document.getElementById('movieSynopsis').value;
+
+        var errorDiv = document.getElementById('errorDivAddMovie');
+
+
+        if (movieName == "" || movieGenre == "" || movieDirector == "" || movieReleaseDate == "" || movieReleaseDate == "" || movieCast == "" || movieDuration == "" || movieSynopsis == "") {
+            errorDiv.innerHTML = "Please fill all the fields.";
+            errorDiv.style.visibility = "visible";
+            return false;
+        }
+
+        //check for file extension
+
+        var movieBanner = document.getElementById('movieBanner').value;
+        var movieThumbnail = document.getElementById('movieThumbnail').value;
+
+        if (movieBanner != "") {
+            var y = movieBanner.substring(movieBanner.indexOf(".") + 1);
+            if (!(y == "jpg" || y == "jpeg" || y == "png" || y == "gif")) {
+                errorDiv.innerHTML = "Invalid Movie banner image selected";
+                errorDiv.style.visibility = "visible";
+                return false;
+            }
+        }
+
+        if (movieThumbnail != "") {
+            var z = movieThumbnail.substring(movieThumbnail.indexOf(".") + 1);
+            if (!(z == "jpg" || y == "jpeg" || y == "png" || y == "gif")) {
+                errorDiv.innerHTML = "Invalid Movie thumbnail image selected";
+                errorDiv.style.visibility = "visible";
+                return false;
+            }
+        }
+
+
+        
+        
+
+    }
+</script>

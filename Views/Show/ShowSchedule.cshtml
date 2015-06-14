@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "ShowSchedule";
+    Layout = "~/Views/Shared/HeaderFooter.cshtml";
+}
+@using CinemaInformationSystemProject.Models;
+
+
+<div class="container" style="background-color:white; color:black">
+    <h3 class="page-header">Movies Schedules</h3>
+
+    @{
+        List<Show> todayShows = ViewBag.todayShows;
+        List<Show> tommorowShows = ViewBag.tommorowShows;
+        List<Gallery> galleries = ViewBag.galleries;
+
+        <h3 style="text-align: center; padding: 10px; background-color: black; color:white ">Today</h3>
+        foreach (Gallery gallery in galleries)
+        {
+            <div class="col-sm-4">
+                <h3 style="background-color: #46b8da; padding: 2%">@gallery.galleryName</h3>
+                <table class="table" style="background-color: #860707;">
+                    @foreach (Show show in todayShows.Where(x => x.showGalleryId == gallery.galleryId))
+                    {
+                        <tr>
+                            <td>@show.showTime</td>
+                            <td>@show.Movie.movieName</td>
+                            <td>@show.showType</td>
+                            <td>@show.Movie.movieLanguage</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        }
+        
+        
+        <div style="clear:both"></div>
+        <h3 style="text-align: center; padding: 10px; background-color: black; color: white;">@ViewBag.tommorowDate</h3>
+        foreach (Gallery gallery in galleries)
+        {
+            <div class="col-sm-4">
+                <h3 style="background-color: #46b8da; padding: 2%">@gallery.galleryName</h3>
+                <table class="table" style="background-color: #860707; ">
+                    @foreach (Show show in tommorowShows.Where(x => x.showGalleryId == gallery.galleryId))
+                    {
+                        <tr>
+                            <td>@show.showTime</td>
+                            <td>@show.Movie.movieName</td>
+                            <td>@show.showType</td>
+                            <td>@show.Movie.movieLanguage</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        }
+
+
+    }
+
+</div>

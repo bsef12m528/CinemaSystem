@@ -1,0 +1,26 @@
+﻿@using CinemaInformationSystemProject.Models
+
+<form method="post" action="/Booking/PickSeat">
+
+    <div class="form-group">
+        <label for="exampleInputEmail1">Available shows</label>
+
+        @if (Model.Count == 0)
+        {
+            <p>No show has been posted for this gallery on the entered date</p>
+        }
+        else
+        {
+
+            <select class="form-control" name="showGalleryId">
+                @foreach (Show show in Model)
+                {
+                    <option value="@show.showId">@show.showTime @show.Movie.movieName (@show.showType)</option>
+                }
+            </select>
+        }
+    </div>
+
+
+    <input type="submit" class="btn btn-info pull-right" id="submit" value="Book it!" />
+</form>

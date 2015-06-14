@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "ViewThisSale";
+    Layout = "~/Views/Admin/Admin_Panel.cshtml";
+}
+
+<h3 class="page-header">Sale Record</h3>
+@using CinemaInformationSystemProject.Models;
+
+@{
+    List<Show> shows = ViewBag.shows;
+}
+
+
+@foreach (Gallery gallery in ViewBag.galleries)
+{
+    <h4 style="color:white; padding:2%; background-color:#808080">@gallery.galleryName</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Movie Name</th><th>Time</th><th>Show Type</th><th>Total amount</th><th>Total Seats reserved</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Show show in shows.Where(x => x.showGalleryId == gallery.galleryId).ToList())
+            {
+                <tr>
+                    <td>@show.Movie.movieName</td>
+                    <td>@show.showTime</td>
+                    <td>@show.showType</td>
+                    <td>@show.Sales.Sum(x => x.amount)</td>
+                    <td>@show.Sales.Sum(x => x.totalSeats)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

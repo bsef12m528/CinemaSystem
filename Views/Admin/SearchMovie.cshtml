@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "ViewMovies";
+    Layout = "~/Views/Admin/Admin_Panel.cshtml";
+}
+
+@using CinemaInformationSystemProject.Models;
+
+<h3 class="page-header">Edit/Delete Movie</h3>
+
+
+<table class="table table-striped">
+
+    <thead>
+        <tr>
+            <th>MovieID</th>
+            <th>MovieName</th>
+            <th>Realease Date<br />(MM-DD-YYYY)</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        <!--dynamically generated values start-->
+        @if (ViewBag.status != null)
+        {
+            <tr><td>@ViewBag.status</td></tr>
+        }
+        
+        @{
+            if (ViewBag.movie != null)
+            {
+                Movie thisMovie = ViewBag.movie;
+
+                <tr>
+                    <td>@thisMovie.movieId</td>
+                    <td>@thisMovie.movieName</td>
+                    <td>@thisMovie.movieReleaseDate</td>
+                    <td>
+                        <!--id will be db genrated-->
+                        <button type="button" class="btn-warning" onclick="self.location = '/Admin/EditMovie/@thisMovie.movieId'">Edit</button>
+                        <button type="button" class="btn-danger" onclick="return confirmRequest(@thisMovie.movieId);">Delete</button>
+                    </td>
+                </tr>
+            }
+
+        }
+
+
+        <!--dynamically generated values end-->
+
+    </tbody>
+</table>
+
+<script>
+    function confirmRequest(x) {
+        var r = confirm("Do you really want to delete this movie?");
+        if (r == true) {
+            self.location = '/Admin/DeleteMovie/' + x;
+
+        } else {
+            return false;
+        }
+    }
+
+</script>

@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "Price & Policy";
+    Layout = "~/Views/Shared/HeaderFooter.cshtml";
+}
+
+
+@using CinemaInformationSystemProject.Models
+<style>
+    * {
+        color: #333;
+    }
+
+    label {
+        font-weight: 100;
+        color: #46b8da;
+    }
+
+    h5 {
+        color: #46b8da;
+        font-weight: bold;
+    }
+</style>
+
+
+<div class="container" style="background-color:white; padding:2%;">
+    <h3 style="color:#46b8da; margin-bottom:2%">&nbsp;&nbsp; <label style="color:#860707;">2D/3D</label> Cinema Tickets </h3>
+
+
+    <!--DB generated-->
+    <h4>2D Movie Ticket: <label>Rs. @ViewBag.d2</label></h4>
+    <h4>3D Movie Ticket: <label>Rs. @ViewBag.d3  <label style="color: #860707;">(Glasses Included)</label></label></h4>
+    <br />
+    <h3 style="color:#46b8da; margin-bottom:2%">&nbsp;&nbsp; Cinema Policy </h3>
+    <ul>
+        <li>Tickets are not refundable - Nor Exchangeable - Non Transferable</li>
+        <li>Kindly check the date, time and name of the film on the ticket.</li>
+        <li>Management will not be responsible if you do not attend the show which is mentioned on the ticket.</li>
+        <li>Strictly no Smocking inside the facility.</li>
+        <li>Recording with mobile camera or any other Camera is strictly prohibited.</li>
+        <li>use of mobile phones are not allowed in auditorium.</li>
+        <li>Children under 5 year are not allowed in the auditorium.</li>
+        <li>No outsider eatables or drinks are allowed in the facility.</li>
+        <li>Ticket has to be in your possession for the entire duration of your visit.</li>
+        <li>The management reserves the right to deny entry if you are unable to produce the ticket at any time within the show time.</li>
+        <li>if for any reason the film is no exhibited on the date & time mentioned then your are entitled to obtain 100% refund.</li>
+        <li>Kindly look after your valuables. Management does not take any responsibility if you lose anything within the premises of the cinema facility.</li>
+        <li>Rights of Admission are reserved (management reserves the right to deny entry or ask anyone to leave the premises anytime without assigning any reason whatsoever).</li>
+
+
+    </ul>
+</div>
+

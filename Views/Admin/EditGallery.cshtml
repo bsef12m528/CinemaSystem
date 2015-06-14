@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "EditShow";
+    Layout = "~/Views/Admin/Admin_Panel.cshtml";
+}
+
+@model CinemaInformationSystemProject.Models.Gallery
+
+<h3 class="page-header">Edit Gallery Details</h3>
+
+@using (Html.BeginForm("EditGalleryFunction", "Admin", FormMethod.Post, new { onsubmit = "return validate()" , style="width:200px" }))
+{
+    @Html.HiddenFor(m => m.galleryId)
+
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.galleryName)
+        @Html.EditorFor(m => m.galleryName, new { @class = "form-control", type = "text", id = "galleryName" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.totalSeats)
+        @Html.EditorFor(m => m.totalSeats, new { @class = "form-control", type = "text", id = "totalSeats" })
+    </div>
+
+
+
+    <div class="alert alert-danger" id="errorDivAddGallery" style="visibility:collapse;">
+
+    </div>
+
+
+
+
+    <input type="submit" class="btn btn-success" style="float:right">
+}
+
+
+<script>
+    function validate() {
+        var galleryName = document.getElementById('galleryName').value;
+        var totalSeats = document.getElementById('totalSeats').value;
+
+        var errorDiv = document.getElementById('errorDivAddGallery');
+
+
+        if (galleryName == "" || totalSeats == "") {
+            errorDiv.innerHTML = "Please fill all the fields.";
+            errorDiv.style.visibility = "visible";
+            return false;
+        }
+
+
+
+    }
+</script>

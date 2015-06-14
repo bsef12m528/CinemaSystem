@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "ViewSale";
+    Layout = "~/Views/Admin/Admin_Panel.cshtml";
+}
+
+<script>
+    $(function () {
+        $("#saleDate").datepicker();
+    });
+</script>
+
+@using CinemaInformationSystemProject.Models;
+<h3 class="page-header">Search For Sale</h3>
+
+<form id="movieForm" method="post" class="col-sm-3" action="/Admin/ViewThisSale">
+    <div class="form-group">
+        <label for="exampleInputEmail1">Select  Date</label>
+        <input type="text" id="saleDate" name="saleDate" class="form-control" placeholder="Pick Date">
+    </div>
+
+    @*<div class="form-group">
+        <label for="exampleInputEmail1">Gallery</label>
+        <select class="form-control" name="showGalleryId">
+            @foreach (Gallery g in ViewBag.galleries)
+            {
+                <option value="@g.galleryId">@g.galleryName</option>
+            }
+        </select>
+    </div>*@
+
+
+
+    <input type="submit" class="btn-info" value="submit" style="float:right" />
+</form>
+
+<div id="sale">
+
+
+</div>

@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "SearchShow";
+    Layout = "~/Views/Admin/Admin_Panel.cshtml";
+}
+
+@using CinemaInformationSystemProject.Models;
+
+<h3 class="page-header">Edit/Delete Show</h3>
+
+@{ List<Show> list = Model; }
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Show ID</th>
+            <th>Show Movie</th>
+            <th>Show Type</th>
+            <th>Show Date<br />(MM-DD-YYYY)</th>
+            <th>Show Time</th>
+            <th>Show Gallery</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+
+        <!--dynamically generated values start-->
+        @if (ViewBag.status != null)
+        {
+            <tr><td>@ViewBag.status</td></tr>
+        }
+
+        else
+        {
+            if (list.Count == 0)
+            {
+                <tr><td>No show found for this date</td></tr>
+            }
+            else
+            {
+                foreach (var detail in list)
+                {
+                    <tr>
+                        <td>@detail.showId</td>
+                        <td>@detail.Movie.movieName</td>
+                        <td>@detail.showType</td>
+                        <td>@detail.showDate</td>
+                        <td>@detail.showTime</td>
+                        <td>@detail.Gallery.galleryName</td>
+                        <td>
+                            <!--id will be db genrated-->
+                            <button type="button" class="btn-warning" onclick="self.location = '/Admin/EditShow/@detail.showId'">Edit</button>
+                            <button type="button" class="btn-danger" onclick="return confirmRequest(@detail.showId);">Delete</button>
+                        </td>
+                    </tr>
+                }
+            }
+        }
+
+
+        <!--dynamically generated values end-->
+
+    </tbody>
+</table>
+
+<script>
+    function confirmRequest(x) {
+        var r = confirm("Do you really want to delete this movie?");
+        if (r == true) {
+            self.location = '/Admin/DeleteShow/' + x;
+
+        } else {
+            return false;
+        }
+    }
+
+</script>

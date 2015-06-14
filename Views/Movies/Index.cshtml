@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "Movies";
+    Layout = "~/Views/Shared/HeaderFooter.cshtml";
+}
+
+@using CinemaInformationSystemProject.Models;
+
+<style>
+    .col-sm-3 {
+        text-align: center;
+        border: 1px solid white;
+        padding: 3%;
+        margin-bottom: 5%;
+        border: 1 px solid #46b8da;
+    }
+</style>
+
+<div class="container">
+
+    <div class="row" style="background-color:white;">
+        <h3 style="color:#46b8da; margin-bottom:5%">&nbsp;&nbsp; Movies in <label style="color:#860707;">Cinema PK</label></h3>
+        <!--This div will be generated from database-->
+        @{
+            List<Movie> list = Model;
+            foreach (Movie movie in list)
+            {
+                string status;
+                string[] arr = movie.movieReleaseDate.Split('/');
+                DateTime rd = new DateTime(int.Parse(arr[2]), int.Parse(arr[0]), int.Parse(arr[1]));
+
+                if (DateTime.Compare(rd, DateTime.Today) <= 0)
+                {
+                    status = "Released";
+                }
+
+
+                else
+                {
+                    status = "coming soon";
+                }
+
+                @:<div class="col-sm-3" style="display: flexbox; background-color: rgba(219, 201, 189, 0.35);">
+                    @:<a href="/Movies/MovieDetails/@movie.movieId">
+                        <img src="~/images/MoviesThumbnails/@(movie.movieId).jpg" alt="Movie name" />
+                        @:<h5 style="color: #46b8da">@movie.movieName</h5>
+                        @:<p style="color:#860707;">@status</p>
+                        @:</a>
+                    @:</div>
+            }
+        }
+
+
+
+
+
+    </div>
+
+</div>

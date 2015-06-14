@@ -1,0 +1,68 @@
+﻿@using CinemaInformationSystemProject.Models
+@{
+    ViewBag.Title = "BookingHistory";
+    Layout = "~/Views/Shared/HeaderFooter.cshtml";
+}
+
+@{
+    User user = (User)Session["user"];
+    string seats="";
+}
+
+<style>
+</style>
+<div class="container" style="background-color:white; color:black">
+    <h3 class="page-header">Booking history</h3>
+    <table class="table" style="background-color: #860707; ">
+        <thead>
+            <tr>
+                <th>Show Date</th>
+                <th>Show Gallery</th>
+                <th>Show Movie</th>
+                <th>Total Seats</th>
+                <th>Seat Numbers</th>
+                <th>Amount</th>
+                <th>Transaction Method</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            <!--dynamically generated values start-->
+            @{
+                List<Sale> list = Model;
+            }
+
+            @foreach (Sale sale in list.OrderByDescending(x => x.Show.showDate))
+            {
+                <tr>
+                    <td>@sale.Show.showDate</td>
+                    <td>@sale.Show.Gallery.galleryName</td>
+                    <td>@sale.Show.Movie.movieName</td>
+                    <td>@sale.totalSeats</td>
+
+                    @foreach(Ticket ticket in sale.Show.Tickets.Where(x=>x.userId== user.userId && x.showId==sale.showId) )
+                    {
+                        seats = seats + " , " + ticket.seatNo;
+                    }
+
+                    <td>@seats</td>
+                    <td>@sale.amount</td>
+                    <td>@sale.saleMethod</td>
+                </tr>
+                
+                seats = "";
+
+                
+            }
+
+
+            @if(list.Count==0)
+            {
+                <tr><td>You have never done any booking!</td></tr>
+            }
+            <!--dynamically generated values end-->
+
+        </tbody>
+    </table>
+</div>

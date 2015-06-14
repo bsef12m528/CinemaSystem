@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "EditShow";
+    Layout = "~/Views/Admin/Admin_Panel.cshtml";
+}
+
+@model CinemaInformationSystemProject.Models.Show
+
+<h3 class="page-header">Edit Show</h3>
+<script>
+    $(function () {
+        $("#showDate").datepicker();
+        $('#showTime').timepicker();
+    });
+</script>
+@using (Html.BeginForm("EditShowFunction", "Admin", FormMethod.Post, new { onsubmit = "return validate()" }))
+{
+    @Html.HiddenFor(m => m.showId)
+    
+     
+    <div class="form-group">
+        @Html.LabelFor(m => m.showDate)
+        @Html.EditorFor(m => m.showDate, new { @class = "form-control", type = "text", id = "showDate", placeholder = "Pick Date" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.showTime)
+        @Html.EditorFor(m => m.showTime, new { @class = "form-control", type = "text", id = "showTime", placeholder = "Select Time" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.showMovieId)
+        @Html.EditorFor(m => m.showMovieId, new { @class = "form-control", type = "text", min = "1", id = "showMovieId", placeholder = "Select Movie Id" })
+    </div>
+
+    
+    <div class="form-group">
+        <label for="exampleInputEmail1">Show type</label>
+        <select class="form-control" name="showType">
+            <option>2D</option>
+            <option>3D</option>
+        </select>
+    </div>
+    
+    @Html.HiddenFor(m => m.showGalleryId)
+
+    <div class="alert alert-danger" id="errorDivAddShow" style="visibility:collapse;">
+
+    </div>
+
+
+
+
+    <input type="submit" class="btn btn-success" style="float:right">
+
+
+
+}
+
+
+<script>
+    function validate() {
+        var showDate = document.getElementById('showDate').value;
+        var showTime = document.getElementById('showTime').value;
+        var showMovieId = document.getElementById('showMovieId').value;
+        var errorDiv = document.getElementById('errorDivAddShow');
+
+
+        if (showDate == "" || showTime == "" || showMovieId == "") {
+            errorDiv.innerHTML = "Please fill all the fields.";
+            errorDiv.style.visibility = "visible";
+            return false;
+        }
+
+    }
+</script>

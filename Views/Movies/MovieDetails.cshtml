@@ -1,0 +1,151 @@
+﻿@{
+    ViewBag.Title = "MovieDetails";
+    Layout = "~/Views/Shared/HeaderFooter.cshtml";
+}
+
+@using CinemaInformationSystemProject.Models;
+
+@{ Movie movie = Model;
+
+ string[] arr = movie.movieReleaseDate.Split('/');
+ DateTime dt = new DateTime(int.Parse(arr[2]), int.Parse(arr[0]), int.Parse(arr[1]));
+ string rDate = dt.ToString("MMM dd ,yyyy");
+
+ List<MovieComment> comments = ViewBag.comments;
+ User user = new User();
+ if (Session["user"] != null)
+ {
+     user = (User)Session["user"];
+ }
+}
+
+<script>
+    function func() {
+
+        var com = document.getElementById("commentText");
+
+
+        if (com.value == "") {
+            com.focus();
+            com.placeholder = "Please write your comment here";
+            return false;
+        }
+
+        var thismovieid = @movie.movieId
+
+        $.ajax({
+            type: "POST",
+            url: "/Movies/PostComment",
+            data: JSON.stringify({ movieId: thismovieid, comment: com.value }),
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            async: true,
+            processData: false,
+            cache: false,
+            success: function (data) {
+                document.getElementById("postedComment").innerHTML = com.value;
+                document.getElementById("recentCommentUserID").innerHTML = "<b style='color: #860707'>@user.userName<b>";
+                $("#recentComment").show(200);
+            },
+            error: function (xhr) {
+                alert("Unable to post comment.");
+            }
+        });
+
+
+        return false;
+
+
+
+    }
+</script>
+
+
+<style>
+    * {
+        color: #333;
+    }
+
+    label {
+        font-weight: 100;
+    }
+
+    h5 {
+        color: #46b8da;
+        font-weight: bold;
+    }
+</style>
+
+
+<div class="container">
+
+    <div class="row" style="background-color:white; padding:5%">
+        <div class="col-sm-3">
+            <img style="height:240px" src="~/images/MoviesThumbnails/@(movie.movieId).jpg" alt="Movie name">
+        </div>
+
+        <div class="col-sm-7">
+            <h3 style="color: #860707">@movie.movieName</h3>
+            <h5>Genre: <label>@movie.movieGenre</label></h5>
+            <h5>Director: <label>@movie.movieDirector</label></h5>
+            <h5>Language: <label>@movie.movieLanguage</label></h5>
+            <h5>Release Date: <label>@rDate</label></h5>
+            <h5>Duration: <label>@movie.movieDuration</label></h5>
+            <h5>Cast: <label>@movie.movieCast</label></h5>
+            <h5>Synopsis: <label>@movie.movieSynopsis</label></h5>
+            <h5>Users Comments: </h5>
+
+
+            <style>
+                .comment {
+                    background-color: rgba(161, 147, 141, 0.35);
+                    padding: 1%;
+                    border: 1px solid white;
+                }
+            </style>
+
+
+
+            @foreach (MovieComment comment in comments)
+            {
+                <div class="col-sm-12 comment">
+                    <div>
+                        <b class="col-sm-3" style="color: #860707">@comment.User.userName</b>
+                        <div class="col-sm-6" style="text-align:right">Posted on <b style="color:#808080">@comment.dateTime</b></div>
+                        @if (comment.userId == user.userId || (user!=null && user.accountType=="admin"))
+                        {
+                            <a class="col-sm-2" style="float:right; text-align:end" href="/Movies/DeleteComment/@comment.Id/?mid=@movie.movieId">x</a>
+                        }
+                    </div>
+                    <hr />
+                    <h6 style="margin-left:3%">
+                        @comment.comment
+                    </h6>
+                </div>
+            }
+
+
+            @*to show recent comment*@
+            <div class="col-sm-12 comment" id="recentComment" style="display:none;">
+                <div>
+                    <b class="col-sm-3" style="color: #860707" id="recentCommentUserID"></b>
+                    <div class="col-sm-6" style="text-align:right">Just now</div>
+                </div>
+                <hr />
+                <h6 style="margin-left:3%" id="postedComment">
+
+                </h6>
+            </div>
+
+            @if (user.userId != 0)
+            {
+
+                <form class="col-sm-12 comment" onsubmit="return func();">
+                    <textarea rows="3" id="commentText" class="form-control" placeholder="Post your comment"></textarea>
+                    <input type="submit" class="btn-info" style="float:right" />
+                </form>
+            }
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = "AddShow";
+    Layout = "~/Views/Admin/Admin_Panel.cshtml";
+}
+
+<h3 class="page-header">Add Show</h3>
+
+@using CinemaInformationSystemProject.Models
+
+<script>
+    $(function () {
+        $("#showDate").datepicker();
+        $('#showTime').timepicker();
+    });
+</script>
+
+
+<form id="movieForm" method="post" class="col-sm-4" onsubmit="return validate();" action="/Admin/AddShowFunction">
+
+    <div class="form-group">
+        <label for="exampleInputEmail1">Date</label>
+        <input type="text" id="showDate" name="showDate" class="form-control" placeholder="Pick Date">
+    </div>
+
+    <div class="form-group">
+        <label for="exampleInputEmail1">Time</label>
+        <input type="text" id="showTime" style="width:90px" name="showTime" class="form-control" placeholder="Select Time">
+    </div>
+
+    <div class="form-group">
+        <label for="exampleInputEmail1">Movie Id</label>
+        <input type="number" id="showMovieId" name="showMovieId" min="1" class="form-control" placeholder="Select Movie Id">
+    </div>
+
+    <div class="form-group">
+        <label for="exampleInputEmail1">Show type</label>
+        <select class="form-control" name="showType">
+            <option>2D</option>
+            <option>3D</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="exampleInputEmail1">Gallery</label>
+        <select class="form-control" name="showGalleryId">
+            @foreach(Gallery g in ViewBag.galleries)
+            {
+                <option value="@g.galleryId">@g.galleryName</option>
+            }
+        </select>
+    </div>
+
+    <div class="alert alert-danger" id="errorDivAddShow" style="visibility:collapse;">
+
+    </div>
+
+
+
+
+    <input type="submit" class="btn btn-success" style="float:right">
+
+
+</form>
+
+
+<script>
+    function validate() {
+        var showDate = document.getElementById('showDate').value;
+        var showTime = document.getElementById('showTime').value;
+        var showMovieId = document.getElementById('showMovieId').value;
+        var errorDiv = document.getElementById('errorDivAddShow');
+
+
+        if (showDate == "" || showTime == "" || showMovieId == "") {
+            errorDiv.innerHTML = "Please fill all the fields.";
+            errorDiv.style.visibility = "visible";
+            return false;
+        }
+
+    }
+</script>

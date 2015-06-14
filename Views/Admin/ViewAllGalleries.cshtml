@@ -1,0 +1,61 @@
+﻿@{
+    Layout = "~/Views/Admin/Admin_Panel.cshtml";
+    ViewBag.Title = "View All Movies";
+}
+
+@using CinemaInformationSystemProject.Models
+
+<h3 class="page-header">All Galleries</h3>
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>GalleryID</th>
+            <th>GalleryName</th>
+            <th>Total Seats<br /></th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        <!--dynamically generated values start-->
+        @{
+            List<Gallery> list = Model;
+        }
+
+        @foreach (Gallery thisGallery in list)
+        {
+            <tr>
+                <td>@thisGallery.galleryId</td>
+                <td>@thisGallery.galleryName</td>
+                <td>@thisGallery.totalSeats</td>
+                <td>
+                    <!--id will be db genrated-->
+                    <button type="button" class="btn-warning" onclick="self.location = '/Admin/EditGallery/@thisGallery.galleryId'">Edit</button>
+                    <button type="button" class="btn-danger" onclick="return confirmRequest(@thisGallery.galleryId);">Delete</button>
+                </td>
+            </tr>
+        }
+
+
+        <!--dynamically generated values end-->
+
+    </tbody>
+</table>
+
+
+<script>
+    function confirmRequest(x)
+    {
+        var r = confirm("Do you really want to delete this movie?");
+        if (r == true) {
+            self.location = '/Admin/DeleteGallery/' + x;
+
+        } else {
+            return false;
+        }
+    }
+
+</script>

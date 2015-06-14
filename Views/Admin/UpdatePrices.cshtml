@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "UpdatePrices";
+    Layout = "~/Views/Admin/Admin_Panel.cshtml";
+}
+
+<h3 class="page-header">Update Prices</h3>
+
+<form id="movieForm" class="col-sm-4" onsubmit="return validate1();" action="/Admin/UpdatePricesFunction">
+
+    <div class="form-group">
+        <label for="exampleInputEmail1">Type</label>
+        <input type="text" id="type" name="type" class="form-control" readonly value="@ViewBag.D2.type">
+    </div>
+
+    <div class="form-group">
+        <label for="exampleInputEmail1">Price</label>
+        <input type="number" min="1" id="price1" name="price" class="form-control" value="@ViewBag.D2.price" placeholder="Enter Price">
+    </div>
+
+    <div class="alert alert-danger" id="errorDiv1" style="visibility:collapse;">
+
+    </div>
+
+    <input type="submit" value="Update" class="btn btn-info" style="float:right">
+
+
+</form>
+
+<form id="movieForm" class="col-sm-4" onsubmit="return validate2();" action="/Admin/UpdatePricesFunction">
+
+    <div class="form-group">
+        <label for="exampleInputEmail1">Type</label>
+        <input type="text" id="type" name="type" class="form-control" readonly value="@ViewBag.D3.type">
+    </div>
+
+    <div class="form-group">
+        <label for="exampleInputEmail1">Price</label>
+        <input type="number" min="1" id="price2" name="price" class="form-control" value="@ViewBag.D3.price" placeholder="Enter Price">
+    </div>
+
+    <div class="alert alert-danger" id="errorDiv2" style="visibility:collapse;">
+
+    </div>
+
+    <input type="submit" value="Update" class="btn btn-info" style="float:right">
+</form>
+
+
+<script>
+    function validate1() {
+        var price = document.getElementById('price1');
+        var price_check = /^[0-9]+$/;
+        var errorDiv = document.getElementById("errorDiv1");
+
+
+        if (!price_check.test(price.value)) {
+            errorDiv.innerHTML = "Please provide price.";
+            errorDiv.style.visibility = "visible";
+            price.focus();
+            return false;
+        }
+
+    }
+
+
+    function validate2() {
+        var price = document.getElementById('price2');
+        var price_check = /^[0-9]+$/;
+        var errorDiv = document.getElementById("errorDiv2");
+
+
+        if (!price_check.test(price.value)) {
+            errorDiv.innerHTML = "Please provide price.";
+            errorDiv.style.visibility = "visible";
+            price.focus();
+            return false;
+        }
+
+    }
+</script>

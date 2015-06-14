@@ -1,0 +1,556 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta charset="utf-8">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.11.3.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/sb-admin-2.css" rel="stylesheet" />
+    <!--optional theme
+    <link href="bootstrap-theme.min.css" rel="stylesheet" />
+        -->
+    <title>@ViewBag.Title</title>
+
+    @using CinemaInformationSystemProject.Models;
+
+    <style>
+        * {
+            color: white;
+        }
+
+        .table-striped {
+            background-color: #860707;
+        }
+    </style>
+
+</head>
+
+@if(Request["status"]=="LoginFailed")
+{
+    <script>
+        $(document).ready(function () {
+            $("#btnup").trigger('click');
+        });
+    </script>
+}
+
+
+@{
+    User user = (User)Session["user"];
+}
+
+
+
+<body style="background-color: black;">
+    <header>
+
+        <div class="container" style="margin-top:2%;">
+            <a href="/Home"><img src="~/images/logo.png" /></a>
+            <div class="pull-right">
+                @{
+                    if (user != null)
+                    {
+                        <a href="/Home/EditProfile" style="color:white;">@user.userName @user.accountType</a><a href ="/Home/Logout">Logout</a>
+                    }
+                    else
+                    {
+                        <button class="btn btn-launch" style="background-color:transparent" id="btnup" onclick="javascript:;" data-toggle="modal" data-target="#loginModal">Login</button>
+                    }
+                }
+                <a></a>
+                <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+                @if(user==null)
+                {
+                 <button class="btn btn-launch" style="background-color:transparent" id="btnup" onclick="javascript:;" data-toggle="modal" data-target="#loginModal"> <img src="~/images/online-booking.png" /></button>
+                 }
+                else
+                {   
+                <button class="btn btn-launch" style="background-color:transparent" id="btnup" onclick="location.href='/Show/SelectDateTime'"> <img src="~/images/online-booking.png" /></button>
+
+                }
+
+                </div>
+        </div>
+
+        <div class="container">
+            <nav class="navbar navbar-inverse" style="">
+
+
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav"></ul>
+                    <ul class="nav navbar-nav navbar-center">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Show Schedule", "ShowSchedule", "Show")</li>
+                        <li>@Html.ActionLink("Movies", "Index", "Movies")</li>
+                        <li>@Html.ActionLink("Tickets", "Index", "Price")</li>
+                        <li>@Html.ActionLink("Cinema PK", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact Us", "ContactUs", "Home")</li>
+                        @if (user != null) { <li>@Html.ActionLink("Booking History", "BookingHistory", "Booking")</li> }
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+    </header>
+
+
+    <div>
+        @RenderBody()
+        @RenderSection("scripts", required: false)
+    </div>
+    <footer class="container" style="background:#333;">
+        <div class="pull-right" style="padding:5px; color:white;">Powered by UMAR</div>
+    </footer>
+
+
+</body>
+</html>
+
+<style>
+    .bt-login, .bt-login:hover, .bt-login:active, .bt-login:focus {
+        background-color: #46b8da;
+        color: #ffffff;
+        padding-bottom: 10px;
+        padding-top: 10px;
+        transition: background-color 300ms linear 0s;
+    }
+
+
+    .login-tab {
+        margin: 0 auto;
+        max-width: 380px;
+    }
+
+    .login-modal-header {
+        background: #860707;
+        color: #fff;
+    }
+
+        .login-modal-header .modal-title {
+            color: #fff;
+        }
+
+        .login-modal-header .close {
+            color: #fff;
+        }
+
+    .login-modal i {
+        color: #000;
+    }
+
+    .login-modal form {
+        max-width: 340px;
+    }
+
+    .tab-pane form {
+        margin: 0 auto;
+    }
+
+    .login-modal-footer {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+</style>
+
+
+<script>
+    $(document).ready(function () {
+        $(document).on('click', '.signup-tab', function (e) {
+            e.preventDefault();
+            $('#signup-taba').tab('show');
+        });
+
+        $(document).on('click', '.signin-tab', function (e) {
+            e.preventDefault();
+            $('#signin-taba').tab('show');
+        });
+
+        $(document).on('click', '.forgetpass-tab', function (e) {
+            e.preventDefault();
+            $('#forgetpass-taba').tab('show');
+        });
+    });
+</script>
+
+
+<!-- -Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content login-modal">
+            <div class="modal-header login-modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title text-center" id="loginModalLabel">USER AUTHENTICATION</h4>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <div role="tabpanel" class="login-tab">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a id="signin-taba" href="#home" aria-controls="home" role="tab" data-toggle="tab">Sign In</a></li>
+                            <li role="presentation"><a id="signup-taba" href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Sign Up</a></li>
+                            <li role="presentation"><a id="forgetpass-taba" href="#forget_password" aria-controls="forget_password" role="tab" data-toggle="tab">Forget Password</a></li>
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active text-center" id="home">
+                                &nbsp;&nbsp;
+                                <span id="login_fail" class="response_error" style="display: none;">Loggin failed, please try again.</span>
+                                <div class="clearfix"></div>
+                                <form id="loginform">
+                                    <div class="alert alert-danger" id="errorDivLogin" style="visibility:collapse;">
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                                            <input type="text" class="form-control" id="login_username" placeholder="Email">
+                                        </div>
+                                        <span class="help-block has-error" id="email-error"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="fa fa-lock"></i></div>
+                                            <input type="password" class="form-control" id="login_password" placeholder="Password">
+                                        </div>
+                                        <span class="help-block has-error" id="password-error"></span>
+                                    </div>
+
+                                    <input type="submit" id="login_btn" class="btn btn-block bt-login" data-loading-text="Signing In...." />
+                                    <div class="clearfix"></div>
+                                    <div class="login-modal-footer">
+                                        <div class="row">
+                                            <div class="col-xs-8 col-sm-8 col-md-8">
+                                                <i class="fa fa-lock"></i>
+                                                <a href="javascript:;" class="forgetpass-tab"> Forgot password? </a>
+
+                                            </div>
+
+                                            <div class="col-xs-4 col-sm-4 col-md-4">
+                                                <i class="fa fa-check"></i>
+                                                <a href="javascript:;" class="signup-tab"> Sign Up </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="profile">
+                                &nbsp;&nbsp;
+                                <span id="registration_fail" class="response_error" style="display: none;">Registration failed, please try again.</span>
+                                <div class="clearfix"></div>
+                                <form id="signupform">
+                                    <div class="alert alert-danger" id="errorDivSignup" style="visibility:collapse;">
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="fa fa-at"></i></div>
+                                            <input type="text" class="form-control" id="userEmail" name="userEmail" placeholder="Email">
+                                        </div>
+                                        <span class="help-block has-error" data-error='0' id="email-error"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="fa fa-at"></i></div>
+                                            <input type="text" class="form-control" name="userName" id="userName" placeholder="Name">
+                                        </div>
+                                        <span class="help-block has-error" data-error='0' id="name-error"></span>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <div class="input-group" style="color: #9A9A8C; ">
+                                            <div class="input-group-addon"><i class="fa fa-at"></i></div>
+                                            <input type="radio" name="userGender" value="male" checked> Male &nbsp;&nbsp;&nbsp;
+                                            <input type="radio" name="userGender" value="female"> Female
+                                        </div>
+                                        <span class="help-block has-error" data-error='0' id="gender-error"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="fa fa-at"></i></div>
+                                            <input type="password" name="userPassword" class="form-control" id="userPassword" placeholder="Password">
+                                        </div>
+                                        <span class="help-block has-error" data-error='0' id="password-error"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="fa fa-at"></i></div>
+                                            <input type="text" name="userPhone" class="form-control" id="userPhone" placeholder="Phone number">
+                                        </div>
+                                        <span class="help-block has-error" data-error='0' id="phone-error"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="fa fa-at"></i></div>
+                                            <input type="text" name="userAddress" class="form-control" id="userAddress" placeholder="Address">
+                                        </div>
+                                        <span class="help-block has-error" data-error='0' id="address-error"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="fa fa-at"></i></div>
+                                            <input type="text" name="userCnic" class="form-control" id="userCnic" placeholder="CNIC number, (Do not include dashes)">
+                                        </div>
+                                        <span class="help-block has-error" data-error='0' id="cnic-error"></span>
+                                    </div>
+
+                                    <input type="submit" id="register_btn" class="btn btn-block bt-login" data-loading-text="Registering...." value="Register">
+                                    <div class="clearfix"></div>
+                                    <div class="login-modal-footer">
+                                        <div class="row">
+                                            <div class="col-xs-8 col-sm-8 col-md-8">
+                                                <i class="fa fa-lock"></i>
+                                                <a href="javascript:;" class="forgetpass-tab"> Forgot password? </a>
+
+                                            </div>
+
+                                            <div class="col-xs-4 col-sm-4 col-md-4">
+                                                <i class="fa fa-check"></i>
+                                                <a href="javascript:;" class="signin-tab"> Sign In </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div role="tabpanel" class="tab-pane text-center" id="forget_password">
+                                &nbsp;&nbsp;
+                                <span id="reset_fail" class="response_error" style="display: none;"></span>
+                                <div class="clearfix"></div>
+                                <form id="forgotpasswordform">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                                            <input type="text" class="form-control" name="femail" id="femail" placeholder="Email">
+                                        </div>
+                                        <span class="help-block has-error" data-error='0' id="femail-error"></span>
+                                    </div>
+
+                                    <button type="button" id="reset_btn" class="btn btn-block bt-login" data-loading-text="Please wait...">Forget Password</button>
+                                    <div class="clearfix"></div>
+                                    <div class="login-modal-footer">
+                                        <div class="row">
+                                            <div class="col-xs-6 col-sm-6 col-md-6">
+                                                <i class="fa fa-lock"></i>
+                                                <a href="javascript:;" class="signin-tab"> Sign In </a>
+
+                                            </div>
+
+                                            <div class="col-xs-6 col-sm-6 col-md-6">
+                                                <i class="fa fa-check"></i>
+                                                <a href="javascript:;" class="signup-tab"> Sign Up </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- - Login Model Ends Here -->
+
+<script>
+    function validateLogin() {
+        var email = document.getElementById('login_username').value;
+        var password = document.getElementById('login_password').value;
+
+        var errordiv = document.getElementById("errorDivLogin");
+
+        var email_check = /^([a-zA-Z0-9_\.\-])+\@@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+
+        if (!email_check.test(email)) {
+            errordiv.innerHTML = "Please provide valid Email.";
+            errordiv.style.visibility = "visible";
+            return false;
+        }
+
+        else if (password == "") {
+            errordiv.innerHTML = "Please Fill all the fields.";
+            errordiv.style.visibility = "visible";
+            return false;
+        }
+        else
+            return true;
+
+    }
+
+
+    function validateSignup() {
+        var email = document.getElementById('userEmail');
+        var name = document.getElementById('userName');
+        var password = document.getElementById('userPassword');
+        var phone = document.getElementById('userPhone');
+        var address = document.getElementById('userAddress');
+        var cnic = document.getElementById('userCnic');
+
+
+        var errordiv = document.getElementById("errorDivSignup");
+
+        var email_check = /^([a-zA-Z0-9_\.\-])+\@@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        var name_check = /^[a-z A-Z]+$/;
+        var phone_check = /^[0-9]+$/;
+        var cnic_check = /^\d{13}$/;
+
+
+        if (!email_check.test(email.value)) {
+            errordiv.innerHTML = "Please provide valid Email.";
+            errordiv.style.visibility = "visible";
+            email.focus();
+            return false;
+        }
+
+        else if (!name_check.test(name.value)) {
+            errordiv.innerHTML = "Please provide valid Name.";
+            errordiv.style.visibility = "visible";
+            name.focus();
+            return false;
+        }
+
+        else if (password.value == "") {
+            errordiv.innerHTML = "Please provide password.";
+            errordiv.style.visibility = "visible";
+            password.focus();
+            return false;
+        }
+
+        else if (!phone_check.test(phone.value)) {
+            errordiv.innerHTML = "Please provide phone number.";
+            errordiv.style.visibility = "visible";
+            phone.focus();
+            return false;
+        }
+
+        else if (address.value == "") {
+            errordiv.innerHTML = "Please provide address.";
+            errordiv.style.visibility = "visible";
+            address.focus();
+            return false;
+        }
+
+        else if (!cnic_check.test(cnic.value)) {
+            errordiv.innerHTML = "Please provide valid CNIC number.";
+            errordiv.style.visibility = "visible";
+            cnic.focus();
+            return false;
+        }
+        else
+            return true;
+
+    }
+
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $('#signupform').submit(function () {
+            $('#errorDivSignup').attr("class", "alert alert-danger");
+            $('#errorDivSignup').html("Please wait...");
+            $('#errorDivSignup').css('visibility', 'visible');
+
+
+            if (!validateSignup()) {
+                return false;
+            }
+
+            $.ajax({
+                url: '/Home/Signup',
+                dataType: "json",
+                type: "POST",
+                contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                data: $(this).serialize(),
+                async: true,
+                processData: true,
+                cache: false,
+                success: function (data) {
+                    $('#errorDivSignup').html(data);
+                    $('#errorDivSignup').css('visibility', 'visible');
+
+                },
+                failed: function(){
+                    $('#errorDivSignup').html("Registration Failed, <br/> Make sure to enter unique email address.");
+                    $('#errorDivSignup').css('visibility', 'visible');
+                },
+
+                error: function (xhr) {
+                    $('#errorDivSignup').html("Registration Failed, <br/> Make sure to enter unique email address.");
+                    $('#errorDivSignup').css('visibility', 'visible');
+                }
+            })
+
+            // to prevent refreshing the whole page page
+            return false;
+
+        });
+
+        $('#loginform').submit(function () {
+            $('#errorDivLogin').attr("class", "alert alert-danger");
+            $('#errorDivLogin').css('visibility', 'visible');
+            $('#errorDivLogin').html("Please wait...");
+
+            if (!validateLogin()) {
+                return false;
+            }
+
+            var userEmail = document.getElementById("login_username").value;
+            var userPassword = document.getElementById("login_password").value;
+
+            $.ajax({
+                url: '/Home/Login',
+                dataType: "json",
+                type: "POST",
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ email: userEmail, password: userPassword }),
+                async: true,
+                processData: false,
+                cache: false,
+                success: function (data) {
+                    if (data == true)
+                    {
+                        window.location = "/Show/SelectDateTime"
+                    }
+                    //$('#errorDivLogin').attr("class", "alert alert-success");
+                    //$('#errorDivLogin').html(data);
+                    //$('#errorDivLogin').css('visibility', 'visible');
+                    //window.location = "/Show/SelectDateTime"
+                    else
+                    {
+                        $('#errorDivLogin').html("Login failed");
+                    }
+                },
+                error: function (xhr) {
+                    $('#errorDivLogin').html("Login Failed, <br/> Enter correct details.");
+                    $('#errorDivLogin').css('visibility', 'visible');
+                }
+            })
+
+            // to prevent refreshing the whole page page
+            return false;
+
+        });
+
+    });
+</script>
+

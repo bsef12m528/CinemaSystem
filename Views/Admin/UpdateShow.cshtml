@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "SearchShow";
+    Layout = "~/Views/Admin/Admin_Panel.cshtml";
+}
+
+@using CinemaInformationSystemProject.Models
+
+<script>
+    $(function () {
+        $("#showDate").datepicker();
+        $('#showTime').timepicker();
+    });
+</script>
+
+<h3 class="page-header">Search For Show</h3>
+
+<form id="movieForm" class="col-sm-3" action="/Admin/SearchShow">
+    <div class="form-group">
+        <label for="exampleInputEmail1">Select Date</label>
+        <input type="text" id="showDate" name="showDate" class="form-control" placeholder="Pick Date">
+    </div>
+
+    <div class="form-group">
+        <label for="exampleInputEmail1">Gallery</label>
+        <select class="form-control" name="showGalleryId">
+            @foreach (Gallery g in ViewBag.galleries)
+            {
+                <option value="@g.galleryId">@g.galleryName</option>
+            }
+        </select>
+    </div>
+
+    <input type="submit" class="btn-info" value="submit" style="float:right"/>
+
+
+</form>

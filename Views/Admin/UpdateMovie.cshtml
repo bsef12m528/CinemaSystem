@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "updateMovie";
+    Layout = "~/Views/Admin/Admin_Panel.cshtml";
+}
+
+<h3 class="page-header">Update Movie</h3>
+
+<div class="col-sm-4">
+    <form action="/Admin/SearchMovie" method="get">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Enter movie id</label>
+            <input type="number" name="movieId" min="1" class="form-control" id="movieId" placeholder="Movie ID"> 
+        </div>
+
+        <button type="submit" class="btn btn-info" style="float:right;">Submit</button>
+    </form>
+</div>

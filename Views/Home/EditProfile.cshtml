@@ -1,0 +1,83 @@
+﻿@{
+    ViewBag.Title = "EditProfile";
+    Layout = "~/Views/Shared/HeaderFooter.cshtml";
+}
+
+@model CinemaInformationSystemProject.Models.User
+<style>
+    * {
+        color: #333;
+    }
+</style>
+
+
+<div class="container" style="background-color:white; padding:1%;">
+    <center>
+        <h3 class="page-header">Edit Profile</h3>
+
+
+        @using (Html.BeginForm("EditProfileFunction", "Home", FormMethod.Post, new {style = "width:200px" }))
+        {
+            @Html.HiddenFor(u => u.userId)
+            @Html.ValidationSummary(true)
+
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.userName)
+                @Html.EditorFor(m => m.userName, new { @class = "form-control", type = "text", id = "galleryName" })
+                @Html.ValidationMessageFor(x=>x.userName)
+            </div>
+
+            @Html.HiddenFor(u => u.userEmail)
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.userPassword)
+                @Html.EditorFor(m => m.userPassword, new { @class = "form-control", type = "password", id = "totalSeats" })
+                @Html.ValidationMessageFor(x=>x.userPassword)
+              </div>
+
+            @*<div class="form-group">
+                    @Html.LabelFor(m => m.userPassword)
+                    @Html.EditorFor(m => m.userPassword, new { @class = "form-control", type = "password", id = "totalSeats" })
+                </div>*@
+
+            @Html.HiddenFor(u => u.userGender)
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.userPhone)
+                @Html.EditorFor(m => m.userPhone, new { @class = "form-control", type = "text", id = "totalSeats" })
+                @Html.ValidationMessageFor(x=>x.userPhone)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.userAddress)
+                @Html.EditorFor(m => m.userAddress, new { @class = "form-control", type = "text", id = "totalSeats" })
+                @Html.ValidationMessageFor(x=>x.userAddress)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.userCnic)
+                @Html.EditorFor(m => m.userCnic, new { @class = "form-control", type = "text", id = "totalSeats" })
+                @Html.ValidationMessageFor(m=>m.userCnic)
+            </div>
+
+            @Html.HiddenFor(x => x.accountType)
+
+            <div class="alert alert-danger" id="errorDivAddGallery" style="visibility:collapse;">
+
+            </div>
+
+
+
+
+            <input type="submit" class="btn-success" style="float:right">
+        }
+
+    </center>
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

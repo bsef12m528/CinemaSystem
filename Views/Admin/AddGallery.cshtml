@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "AddMovie";
+    Layout = "~/Views/Admin/Admin_Panel.cshtml";
+}
+
+<h3 class="page-header">Add Gallery</h3>
+
+
+
+
+@*<style>
+        @@media screen and (min-device-width: 800px) and (max-device-width: 2000px) {
+            /* STYLES HERE */
+            #movieForm{
+                width:50%;
+            }
+        }
+    </style>*@
+
+<div class="col-sm-6">
+    @if (Model != null)
+    {
+        <h1>Model</h1>
+    }
+
+    <form id="movieForm" onsubmit="return validate();" action="/Admin/AddGalleryFunction" method="post" enctype="multipart/form-data">
+
+        <div class="form-group">
+            <label for="exampleInputEmail1">Gallery Name</label>
+            <input type="text" class="form-control" id="galleryName" value="" name="galleryName" placeholder="Enter gllery name">
+        </div>
+
+        <div class="form-group">
+            <label for="exampleInputEmail1">Total Seats</label>
+            <input type="number" class="form-control" id="totalSeats" name="totalSeats" placeholder="Enter total capacity of this gallery">
+        </div>
+
+        <div class="alert alert-danger" id="errorDivAddGallery" style="visibility:collapse;">
+
+        </div>
+
+        
+        <input type="submit" class="btn btn-success" style="float:right">
+    </form>
+    <br /><br /><br />
+</div>
+
+<script>
+    function validate() {
+        var galleryName = document.getElementById('galleryName').value;
+        var totalSeats = document.getElementById('totalSeats').value;
+       
+        var errorDiv = document.getElementById('errorDivAddGallery');
+
+
+        if (galleryName == "" || totalSeats == "")
+        {
+            errorDiv.innerHTML = "Please fill all the fields.";
+            errorDiv.style.visibility = "visible";
+            return false;
+        }
+
+        
+
+    }
+</script>

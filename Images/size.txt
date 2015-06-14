@@ -1,0 +1,2 @@
+slider image size: 1200 x 300
+thumbnail size: 140 x 180
