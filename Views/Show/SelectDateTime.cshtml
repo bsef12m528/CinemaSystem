@@ -104,6 +104,9 @@
 <script>
     $(document).ready(function () {
         $('#selectShowForm').submit(function () {
+            
+            $('#hiddenDiv').html("<h3 style='color:red;'>Please wait...</h3>");
+            $('#hiddenDiv').show();
 
             if (!validate()) {
                 return false;
@@ -115,6 +118,7 @@
                 type: "POST",
                 data: $(this).serialize(),
                 success: function (data) {
+                    $('#hiddenDiv').hide();
                     $('#hiddenDiv').html(data);
                     $('#hiddenDiv').show(200);
                 },
